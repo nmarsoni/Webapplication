@@ -1,0 +1,228 @@
+<html>
+<html>
+<head>
+  <title>Display Book</title>
+  
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+      color: #333333;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .book {
+      display: flex;
+      margin-bottom: 20px;
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .book-image {
+      flex: 0 0 150px;
+      margin-right: 20px;
+    }
+
+    .book-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 3px;
+    }
+
+    .book-details {
+      flex: 1;
+    }
+
+    .book-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .book-author {
+      font-size: 16px;
+      color: #666666;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      font-size: 16px;
+      line-height: 1.5;
+
+    }
+
+    /* Additional styles for book info */
+    .book-info {
+      margin-bottom: 20px;
+    }
+
+    .book-title {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .book-author {
+      font-size: 18px;
+      font-style: italic;
+    }
+
+    .book-description {
+      margin-top: 10px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h2, h3 {
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    a {
+      color: #4285f4;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background-color: #ae9efd;
+      color: #fff;
+      padding: 10px;
+    }
+
+  </style>
+
+
+</head>
+<body>
+  <header>
+    <h1>Book Information</h1>
+  </header>
+
+  <div id="data-container">
+    <!-- The fetched title will be displayed here -->
+  </div>
+  
+
+
+
+
+
+  <script>
+    // Fetch the JSON file
+    fetch('google-books-book.json')
+      .then(response => response.json()) // Parse the response as JSON
+      .then(data => {
+        // Process the fetched JSON data
+        // You can access and manipulate the data here
+        console.log(data); // Example: Display the data in the browser console
+        
+      const kind = data.kind;
+      const id = data.id;
+      const tag = data.etag;
+      const title = data.volumeInfo.title;
+      const subtitle = data.volumeInfo.subtitle;
+      const authors = data.volumeInfo.authors;
+      const publisher = data.volumeInfo.publisher;
+      const publishedDate = data.volumeInfo.publishedDate;
+      const description = data.volumeInfo.description;
+      const isbn10 = data.volumeInfo.industryIdentifiers.find(identifier => identifier.type === 'ISBN_10').identifier;
+      const isbn13 = data.volumeInfo.industryIdentifiers.find(identifier => identifier.type === 'ISBN_13').identifier;
+      const readingModes = data.volumeInfo.readingModes;
+      const pageCount = data.volumeInfo.pageCount;
+      const printedPageCount = data.volumeInfo.printedPageCount;
+      const dimensions = data.volumeInfo.dimensions;
+      const printType = data.volumeInfo.printType;
+      const categories = data.volumeInfo.categories;
+      const averageRating = data.volumeInfo.averageRating;
+      const ratingsCount = data.volumeInfo.ratingsCount;
+      const maturityRating = data.volumeInfo.maturityRating;
+      const contentVersion = data.volumeInfo.contentVersion;
+      const panelizationSummary = data.volumeInfo.panelizationSummary;
+      //const imageLinks = data.volumeInfo.imageLinks;
+      const imageLinks = data.volumeInfo.imageLinks.small;
+
+
+      const language = data.volumeInfo.language;
+      const previewLink = data.volumeInfo.previewLink;
+      const infoLink = data.volumeInfo.infoLink;
+      const canonicalVolumeLink = data.volumeInfo.canonicalVolumeLink;
+      const saleInfo = data.saleInfo;
+      const accessInfo = data.accessInfo;
+      
+        
+
+        const dataContainer = document.getElementById('data-container');
+        dataContainer.innerHTML = `
+        <h2>${title}</h2>
+        <h3>${subtitle}</h3>
+        <img src="${imageLinks}"/>
+        <p>Authors: ${authors.join(', ')}</p>
+        <p>Publisher: ${publisher}</p>
+        <p>Published Date: ${publishedDate}</p>
+        <p>Description: ${description}</p>
+        <p>ISBN-10: ${isbn10}</p>
+        <p>ISBN-13: ${isbn13}</p>
+        <p>Reading Modes: Text - ${readingModes.text}, Image - ${readingModes.image}</p>
+        <p>Page Count: ${pageCount}</p>
+        <p>Printed Page Count: ${printedPageCount}</p>
+        <p>Dimensions: Height - ${dimensions.height}, Width - ${dimensions.width}, Thickness - ${dimensions.thickness}</p>
+        <p>Print Type: ${printType}</p>
+        <p>Categories: ${categories.join(', ')}</p>
+        <p>Average Rating: ${averageRating}</p>
+        <p>Ratings Count: ${ratingsCount}</p>
+        <p>Maturity Rating: ${maturityRating}</p>
+        <p>Content Version: ${contentVersion}</p>
+        <p>Panelization Summary: Contains EPUB Bubbles - ${panelizationSummary.containsEpubBubbles}, Contains Image Bubbles - ${panelizationSummary.containsImageBubbles}</p>
+        <p>Language: ${language}</p>
+        <p><a href="${previewLink}" target="_blank">Preview Link</a></p>
+        <p><a href="${infoLink}" target="_blank">Info Link</a></p>
+        <p><a href="${canonicalVolumeLink}" target="_blank">Canonical Volume Link</a></p>
+        <p>Country: ${saleInfo.country}</p>
+        <p>Saleability: ${saleInfo.saleability}</p>
+        <p>Is Ebook: ${saleInfo.isEbook}</p>
+        <p>Country: ${accessInfo.country}</p>
+        <p>Viewability: ${accessInfo.viewability}</p>
+
+        <!-- <p>Embeddable: ${accessInfo.embeddable}</p> -->
+
+       
+        <p>Public Domain: ${accessInfo.publicDomain}</p>
+        <p>Text-to-Speech Permission: ${accessInfo.textToSpeechPermission}</p>
+        <p>EPUB Availability: ${accessInfo.epub.isAvailable}</p>
+        <p>PDF Availability: ${accessInfo.pdf.isAvailable}</p>
+        <p><a href="${accessInfo.webReaderLink}" target="_blank">Web Reader Link</a></p>
+        <p>Access View Status: ${accessInfo.accessViewStatus}</p>
+        <p>Quote Sharing Allowed: ${accessInfo.quoteSharingAllowed}</p>
+
+
+        
+      `;
+
+
+
+      })
+
+  </script>
+
+
+</body>
+</html>
