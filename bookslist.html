@@ -163,6 +163,17 @@
           thumbnailElement.className = 'book-thumbnail';
           thumbnailElement.src = imageLinks?.thumbnail;
           thumbnailElement.alt = 'Book Thumbnail';
+          const pageCountElement = document.createElement('p');
+          pageCountElement.className = 'book-pagecount';
+          pageCountElement.textContent = 'Page Count: ' + pageCount;
+
+          const categoriesElement = document.createElement('p');
+          categoriesElement.className = 'book-categories';
+          categoriesElement.textContent = 'Categories: ' + categories.join(', ');
+
+          const averageRatingElement = document.createElement('p');
+          averageRatingElement.className = 'book-rating';
+          averageRatingElement.textContent = 'Average Rating: ' + averageRating;
 
           
 
@@ -175,6 +186,9 @@
           bookInfo.appendChild(thumbnailElement);
           bookInfo.appendChild(authorElement);
           bookInfo.appendChild(descriptionElement);
+          bookInfo.appendChild(pageCountElement);
+          bookInfo.appendChild(categoriesElement);
+          bookInfo.appendChild(averageRatingElement);
           
           document.getElementById('data-container').appendChild(bookInfo);
         });
