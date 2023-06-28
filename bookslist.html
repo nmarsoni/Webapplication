@@ -119,83 +119,150 @@
   </div>
   <script>
     fetch('google-books-search.json')
-      .then(response => response.json()) // Parse the response as JSON
-      .then(data => {
-        // Process the fetched JSON data
-        data.items.forEach(book => {
-          // Extract book information
-          const { id, etag, selfLink, volumeInfo } = book;
-          const { title, subtitle, authors, description, imageLinks  } = volumeInfo;
+  .then(response => response.json())
+  .then(data => {
+    data.items.forEach(book => {
+      const { id, etag, selfLink, volumeInfo } = book;
+      const {
+        title,
+        subtitle,
+        authors,
+        publisher,
+        publishedDate,
+        description,
+        industryIdentifiers,
+        pageCount,
+        printType,
+        categories,
+        averageRating,
+        maturityRating,
+        imageLinks,
+        language,
+        previewLink,
+        infoLink,
+        canonicalVolumeLink
+      } = volumeInfo;
 
-          // Create elements for each book
-          const bookInfo = document.createElement('div');
-          bookInfo.className = 'book-info';
+      const bookInfo = document.createElement('div');
+      bookInfo.className = 'book-info';
 
-          const idElement = document.createElement('p');
-          idElement.className = 'book-id';
-          idElement.textContent = 'ID: ' + id;
+      const idElement = document.createElement('p');
+      idElement.className = 'book-id';
+      idElement.textContent = 'ID: ' + id;
 
-          const etagElement = document.createElement('p');
-          etagElement.className = 'book-etag';
-          etagElement.textContent = 'ETag: ' + etag;
+      // ... existing code ...
 
-          const selfLinkElement = document.createElement('p');
-          selfLinkElement.className = 'book-selflink';
-          selfLinkElement.textContent = 'Self Link: ' + selfLink;
+      const titleElement = document.createElement('h2');
+      titleElement.className = 'book-title';
+      titleElement.textContent = title;
 
-          const titleElement = document.createElement('h2');
-          titleElement.className = 'book-title';
-          titleElement.textContent = title;
+      const subtitleElement = document.createElement('h3');
+      subtitleElement.className = 'book-subtitle';
+      subtitleElement.textContent = 'Subtitle: ' + subtitle;
 
-          const subtitleElement = document.createElement('h3');
-          subtitleElement.className = 'book-subtitle';
-          subtitleElement.textContent = 'Subtitle: ' + subtitle;
+      const authorElement = document.createElement('p');
+      authorElement.className = 'book-author';
+      authorElement.textContent = 'Author(s): ' + authors.join(', ');
 
-          const authorElement = document.createElement('p');
-          authorElement.className = 'book-author';
-          authorElement.textContent = 'Author(s): ' + authors.join(', ');
+      const publisherElement = document.createElement('p');
+      publisherElement.className = 'book-publisher';
+      publisherElement.textContent = 'Publisher: ' + publisher;
 
-          const descriptionElement = document.createElement('p');
-          descriptionElement.className = 'book-description';
-          descriptionElement.textContent = 'Description: ' + description;
+      const publishedDateElement = document.createElement('p');
+      publishedDateElement.className = 'book-published-date';
+      publishedDateElement.textContent = 'Published Date: ' + publishedDate;
 
-          const thumbnailElement = document.createElement('img');
-          thumbnailElement.className = 'book-thumbnail';
-          thumbnailElement.src = imageLinks?.thumbnail;
-          thumbnailElement.alt = 'Book Thumbnail';
-          const pageCountElement = document.createElement('p');
-          pageCountElement.className = 'book-pagecount';
-          pageCountElement.textContent = 'Page Count: ' + pageCount;
+      const descriptionElement = document.createElement('p');
+      descriptionElement.className = 'book-description';
+      descriptionElement.textContent = 'Description: ' + description;
 
-          const categoriesElement = document.createElement('p');
-          categoriesElement.className = 'book-categories';
-          categoriesElement.textContent = 'Categories: ' + categories.join(', ');
+      const identifiersElement = document.createElement('p');
+      identifiersElement.className = 'book-identifiers';
+      identifiersElement.textContent = 'ISBN: ' + industryIdentifiers.map(identifier => identifier.identifier).join(', ');
 
-          const averageRatingElement = document.createElement('p');
-          averageRatingElement.className = 'book-rating';
-          averageRatingElement.textContent = 'Average Rating: ' + averageRating;
+      const pageCountElement = document.createElement('p');
+      pageCountElement.className = 'book-page-count';
+      pageCountElement.textContent = 'Page Count: ' + pageCount;
 
-          
+      const printTypeElement = document.createElement('p');
+      printTypeElement.className = 'book-print-type';
+      printTypeElement.textContent = 'Print Type: ' + printType;
 
-          // Append book elements to the data container
-          bookInfo.appendChild(idElement);
-          bookInfo.appendChild(etagElement);
-          bookInfo.appendChild(selfLinkElement);
-          bookInfo.appendChild(titleElement);
-          bookInfo.appendChild(subtitleElement);
-          bookInfo.appendChild(thumbnailElement);
-          bookInfo.appendChild(authorElement);
-          bookInfo.appendChild(descriptionElement);
-          bookInfo.appendChild(pageCountElement);
-          bookInfo.appendChild(categoriesElement);
-          bookInfo.appendChild(averageRatingElement);
-          
-          document.getElementById('data-container').appendChild(bookInfo);
-        });
-      })
-      .catch(error => {
-        console.log('Error:', error);
-      });
+      const categoriesElement = document.createElement('p');
+      categoriesElement.className = 'book-categories';
+      categoriesElement.textContent = 'Categories: ' + categories.join(', ');
+
+      const averageRatingElement = document.createElement('p');
+      averageRatingElement.className = 'book-average-rating';
+      averageRatingElement.textContent = 'Average Rating: ' + averageRating;
+
+      const maturityRatingElement = document.createElement('p');
+      maturityRatingElement.className = 'book-maturity-rating';
+      maturityRatingElement.textContent = 'Maturity Rating: ' + maturityRating;
+
+      const thumbnailElement = document.createElement('img');
+      thumbnailElement.className = 'book-thumbnail';
+      thumbnailElement.src = imageLinks?.thumbnail;
+      thumbnailElement.alt = 'Book Thumbnail';
+
+      const languageElement = document.createElement('p');
+      languageElement.className = 'book-language';
+      languageElement.textContent = 'Language: ' + language;
+
+      const previewLinkElement = document.createElement('a');
+      previewLinkElement.className = 'book-preview-link';
+      previewLinkElement.href = previewLink;
+      previewLinkElement.textContent = 'Preview Link';
+
+      const infoLinkElement = document.createElement('a');
+      infoLinkElement.className = 'book-info-link';
+      infoLinkElement.href = infoLink;
+      infoLinkElement.textContent = 'Info Link';
+
+      const canonicalVolumeLinkElement = document.createElement('a');
+      canonicalVolumeLinkElement.className = 'book-canonical-link';
+      canonicalVolumeLinkElement.href = canonicalVolumeLink;
+      canonicalVolumeLinkElement.textContent = 'Canonical Volume Link';
+
+      // ... existing code ...
+
+      bookInfo.appendChild(idElement);
+      // ... existing code ...
+      bookInfo.appendChild(titleElement);
+      bookInfo.appendChild(subtitleElement);
+      bookInfo.appendChild(authorElement);
+      bookInfo.appendChild(publisherElement);
+      bookInfo.appendChild(publishedDateElement);
+      bookInfo.appendChild(descriptionElement);
+      bookInfo.appendChild(identifiersElement);
+      bookInfo.appendChild(pageCountElement);
+      bookInfo.appendChild(printTypeElement);
+      bookInfo.appendChild(categoriesElement);
+      bookInfo.appendChild(averageRatingElement);
+      bookInfo.appendChild(maturityRatingElement);
+      bookInfo.appendChild(thumbnailElement);
+      bookInfo.appendChild(languageElement);
+      bookInfo.appendChild(previewLinkElement);
+      bookInfo.appendChild(infoLinkElement);
+      bookInfo.appendChild(canonicalVolumeLinkElement);
+
+      document.getElementById('data-container').appendChild(bookInfo);
+    });
+  })
+  .catch(error => {
+    console.log('Error:', error);
+  });
+
   </script>
 </body>
 </html>
+
+
+///const thumbnailElement = document.createElement('img');
+thumbnailElement.className = 'book-thumbnail';
+thumbnailElement.src = imageLinks?.thumbnail;
+thumbnailElement.alt = 'Book Thumbnail';
+
+
+
+//imageLinks
