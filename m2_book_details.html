@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.book-details {
+			margin: 20px;
+		}
+
+		.book-details h2 {
+			margin-bottom: 10px;
+		}
+
+		.book-details p {
+			margin: 5px 0;
+		}
+
+		.book-details img {
+			max-width: 200px;
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="book-details">
+		<h2>Book Details</h2>
+		<p><strong>Title:</strong> <span id="title"></span></p>
+		<p><strong>Author(s):</strong> <span id="authors"></span></p>
+		<p><strong>Description:</strong></p>
+		<p id="description"></p>
+		<img id="thumbnail" src="" alt="Book Thumbnail">
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', async function() {
+			const bookId = getBookIdFromUrl();
+			if (bookId) {
+				try {
+					const book = await fetchBookDetails(bookId);
+					displayBookDetails(book);
+				} catch (error) {
+					console.error('Error:', error);
+				}
+			}
+		});
+
+		function getBookIdFromUrl() {
+			const queryParams = new URLSearchParams(window.location.search);
+			return queryParams.get('id');
+		}
+
+		async function fetchBookDetails(bookId) {
+			const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`;
+			const response = await fetch(url);
+			if (!response.ok) {
+				throw new Error('Unable to fetch book details.');
+			}
+			const data = await response.json();
+			return data;
+		}
+
+		function displayBookDetails(book) {
+			const titleElement = document.getElementById('title');
+			const authorsElement = document.getElementById('authors');
+			const descriptionElement = document.getElementById('description');
+			const thumbnailElement = document.getElementById('thumbnail');
+
+			titleElement.textContent = book.volumeInfo.title;
+			authorsElement.textContent = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'N/A';
+			descriptionElement.textContent = book.volumeInfo.description || 'No description available';
+			if (book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail) {
+				thumbnailElement.src = book.volumeInfo.imageLinks.thumbnail;
+			} else {
+				thumbnailElement.style.display = 'none';
+			}
+		}
+	</script>
+</body>
+</html>
