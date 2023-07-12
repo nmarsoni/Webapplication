@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Website by NM</title>
+  <style>
+    /* Basic CSS for styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ae9efd;
+      color: #fff;
+      padding: 10px;
+    }
+    nav {
+      background-color: #5c5d5b;
+      color: #fff;
+      padding: 10px;
+    }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+    main {
+      margin: 20px;
+    }
+
+    footer {
+      background-color: #555;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .books-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .book-item {
+      width: 200px;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .book-title {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .book-image {
+      width: 100px;
+      height: 150px;
+      object-fit: cover;
+      margin-top: 10px;
+    }
+
+    .page-selector {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .page-selector-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid #ccc;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    .page-selector-button.active {
+      background-color: #ae9efd;
+      color: #fff;
+    }
+
+    .book-details {
+      margin-top: 20px;
+      display: none;
+      text-align: left;
+    }
+
+    .book-details-title {
+      font-weight: bold;
+    }
+
+    .book-details-description {
+      margin-top: 10px;
+    }
+    header {
+      background-color: #ae9efd;
+      color: #fff;
+      padding: 5px;
+    }
+    .bookshelf {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.book-item {
+  width: 200px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Milestone 3</h1>
+   
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="m1.html">Milestone1</a></li>
+      <li><a href="m2.html">Milestone2</a></li>
+      <li><a href="m3.html">Milestone3</a></li>
+      <li><a href="m4.html">Milestone4</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <p>Student Name: Nidhi Marsonia</p>
+    <p>Course: IT4403 Adv Web and Mobile Application Summer 2023</p>
+    <p>Affiliation: Kennesaw State University</p>
+    <h2>Description</h2>
+    <p>Milestone 3</p>
+    <p>-Display book details: when a book is clicked/selected from the search results, the details about the book should be displayed in a section below or to the right of the results division.</p>
+      <p>-Display books from one of your public bookshelves on the same page. Display the books using the same style used for the search results. Clicking on a book will display the detailed book information just like the last functionality.</p>
+      
+    <header><h2>Book Search</h2></header>
+    
+    <div>
+      <label for="txt_search">Search Term:</label>
+      <input type="text" id="txt_search"><br><br>
+
+      <input type="button" id="btn_search" value="Search">
+      <input type="button" id="btn_clear" value="Clear">
+      <br><br>
+    </div>
+    <br>
+    <div class="books-container" id="books"></div>
+    <div id="page_controls" class="page-selector"></div>
+    <div class="book-details" id="book_details"></div>
+
+    <script>
+      // JavaScript code starts here
+      $(document).ready(function() {
+        var booksContainer = $('#books');
+        var searchInput = $('#txt_search');
+        var searchButton = $('#btn_search');
+        var clearButton = $('#btn_clear');
+        var pageControls = $('#page_controls');
+        var bookDetails = $('#book_details');
+        var maxResults = 10;
+        var maxBooks = 50;
+        var maxPages = 5; // Maximum number of page buttons
+        var totalResults = 0;
+        var currentSearchTerm = '';
+
+        function createPageButtons(totalPages) {
+          pageControls.empty(); // Clear existing page controls
+
+          var totalPagesToRender = Math.min(totalPages, maxPages);
+
+          for (var i = 1; i <= totalPagesToRender; i++) {
+            var button = $('<div>').addClass('page-selector-button').text(i);
+
+            pageControls.append(button);
+
+            // Add event listener to page buttons
+            button.on('click', function() {
+              var selectedPage = parseInt($(this).text());
+              var startIndex = (selectedPage - 1) * maxResults;
+              loadBooks(currentSearchTerm, startIndex);
+
+              // Update active state of buttons
+              $('.page-selector-button').removeClass('active');
+              $(this).addClass('active');
+
+              // Hide book details
+              bookDetails.hide();
+            });
+          }
+        }
+
+        function updatePageButtons() {
+          var selectedPage = parseInt($('.page-selector-button.active').text());
+          var startIndex = (selectedPage - 1) * maxResults;
+          loadBooks(currentSearchTerm, startIndex);
+        }
+
+        searchButton.on('click', function() {
+          var searchTerm = searchInput.val();
+          currentSearchTerm = searchTerm;
+          loadBooks(searchTerm, 0);
+
+          // Hide book details
+          bookDetails.hide();
+        });
+
+        clearButton.on('click', function() {
+          searchInput.val('');
+          booksContainer.empty();
+          createPageButtons(Math.ceil(totalResults / maxResults));
+
+          // Hide book details
+          bookDetails.hide();
+        });
+
+        function loadBooks(searchTerm, startIndex = 0) {
+          var remainingBooks = maxBooks - startIndex;
+          var queryMaxResults = remainingBooks < maxResults ? remainingBooks : maxResults;
+          var url =
+            'https://www.googleapis.com/books/v1/volumes?q=' +
+            searchTerm +
+            '&startIndex=' +
+            startIndex +
+            '&maxResults=' +
+            queryMaxResults;
+
+          $.getJSON(url, function(response) {
+            totalResults = response.totalItems;
+
+            booksContainer.empty();
+            $.each(response.items.slice(0, maxResults), function(index, book) {
+              var bookItem = $('<div>').addClass('book-item');
+
+              var imageContainer = $('<div>');
+
+              var image = $('<img>').addClass('book-image');
+              if (book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail) {
+                image.attr('src', book.volumeInfo.imageLinks.smallThumbnail);
+              } else {
+                image.attr('src', 'placeholder.jpg'); // Placeholder image if thumbnail is not available
+              }
+
+              imageContainer.append(image);
+
+              var title = $('<div>').addClass('book-title').text(book.volumeInfo.title);
+
+              bookItem.append(imageContainer);
+              bookItem.append(title);
+
+              // Add click event listener to show book details
+              bookItem.on('click', function() {
+                displayBookDetails(book);
+              });
+
+              booksContainer.append(bookItem);
+            });
+
+            createPageButtons(Math.ceil(totalResults / maxResults));
+          });
+        }
+
+        function displayBookDetails(book) {
+          bookDetails.empty(); // Clear existing book details
+
+          var detailsHeading = $('<h2>').text('Book Details');
+          var detailsTitle = $('<h3>').addClass('book-details-title').text(book.volumeInfo.title);
+          var detailsAuthor = $('<p>').text('Author: ' + book.volumeInfo.authors);
+          var detailsDescription = $('<p>').addClass('book-details-description').text(book.volumeInfo.description);
+          var detailsMoreInfo = $('<p>').html('<a href="' + book.volumeInfo.infoLink + '">More Info</a>');
+          var detailsImage = $('<img>').attr('src', book.volumeInfo.imageLinks.thumbnail).addClass('book-details-image');
+
+          bookDetails.append(detailsHeading);
+          bookDetails.append(detailsImage);
+          bookDetails.append(detailsTitle);
+          bookDetails.append(detailsAuthor);
+          bookDetails.append(detailsDescription);
+          bookDetails.append(detailsMoreInfo);
+
+          // Show book details
+          bookDetails.show();
+        }
+
+        // Load books on page load
+        loadBooks('', 0);
+      });
+    </script>
+
+    <header>
+      <h1>Book Shelf</h1>
+      
+    </header>
+
+    <div class="bookshelf" id="bookshelfContainer">
+      <div class="row"></div>
+    </div>
+
+    <div id="book_details" class="book-details"></div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      var apiKey = 'AIzaSyCMMAPlUjqHd0ZPaDrtTxqJXv1vbHf-rEs';
+      var userId = '107165979918565058066';
+
+      function displayBooks(books) {
+  var bookshelf = $('.bookshelf');
+  bookshelf.empty();
+
+  $.each(books, function (index, book) {
+    var bookItem = $('<div>').addClass('book-item');
+
+    var imageContainer = $('<div>');
+    var image = $('<img>').addClass('book-image');
+
+    if (book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail) {
+      image.attr('src', book.volumeInfo.imageLinks.smallThumbnail);
+    } else {
+      image.attr('src', 'placeholder.jpg'); // Placeholder image if thumbnail is not available
+    }
+
+    imageContainer.append(image);
+
+    var title = $('<div>').addClass('book-title').text(book.volumeInfo.title);
+
+    bookItem.append(imageContainer);
+    bookItem.append(title);
+
+    // Add click event listener to show book details
+    bookItem.on('click', function () {
+      displayBookDetails(book.volumeInfo);
+    });
+
+    bookshelf.append(bookItem);
+  });
+}
+
+      
+
+
+
+function displayBookDetails(bookInfo) {
+  var bookDetails = $('#book_details');
+  bookDetails.empty(); // Clear existing book details
+
+  var detailsHeading = $('<h2>').text('Book Details');
+  var detailsTitle = $('<h3>').addClass('book-details-title').text(bookInfo.title);
+  var detailsAuthor = $('<p>').text('Author: ' + bookInfo.authors);
+  var detailsDescription = $('<p>').addClass('book-details-description').text(bookInfo.description);
+  var detailsMoreInfo = $('<p>').html('<a href="' + bookInfo.infoLink + '">More Info</a>');
+  var detailsImage = $('<img>').attr('src', bookInfo.imageLinks.thumbnail).addClass('book-details-image');
+
+  bookDetails.append(detailsHeading);
+  bookDetails.append(detailsImage);
+  bookDetails.append(detailsTitle);
+  bookDetails.append(detailsAuthor);
+  bookDetails.append(detailsDescription);
+  bookDetails.append(detailsMoreInfo);
+
+  // Show book details
+  bookDetails.show();
+}
+
+
+      
+
+      function fetchBooks() {
+        var apiUrl = 'https://www.googleapis.com/books/v1/users/' + userId + '/bookshelves/0/volumes?key=' + apiKey;
+
+        $.ajax({
+          url: apiUrl,
+          dataType: 'json',
+          success: function(response) {
+            var books = response.items;
+            displayBooks(books);
+          },
+          error: function(xhr, status, error) {
+            console.log('Error: ' + error);
+          }
+        });
+      }
+
+      fetchBooks();
+
+
+    </script>
+  </main>
+
+  <footer>
+    <p>This is a class project and not a valid website.</p>
+  </footer>
+</body>
+</html>
