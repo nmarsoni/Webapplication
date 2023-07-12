@@ -174,7 +174,7 @@
     <div class="book-details" id="book_details"></div>
 
     <script>
-      // JavaScript code starts here
+      
       $(document).ready(function() {
         var booksContainer = $('#books');
         var searchInput = $('#txt_search');
@@ -184,12 +184,12 @@
         var bookDetails = $('#book_details');
         var maxResults = 10;
         var maxBooks = 50;
-        var maxPages = 5; // Maximum number of page buttons
+        var maxPages = 5; 
         var totalResults = 0;
         var currentSearchTerm = '';
 
         function createPageButtons(totalPages) {
-          pageControls.empty(); // Clear existing page controls
+          pageControls.empty(); 
 
           var totalPagesToRender = Math.min(totalPages, maxPages);
 
@@ -198,17 +198,16 @@
 
             pageControls.append(button);
 
-            // Add event listener to page buttons
+            
             button.on('click', function() {
               var selectedPage = parseInt($(this).text());
               var startIndex = (selectedPage - 1) * maxResults;
               loadBooks(currentSearchTerm, startIndex);
 
-              // Update active state of buttons
               $('.page-selector-button').removeClass('active');
               $(this).addClass('active');
 
-              // Hide book details
+              
               bookDetails.hide();
             });
           }
@@ -225,7 +224,7 @@
           currentSearchTerm = searchTerm;
           loadBooks(searchTerm, 0);
 
-          // Hide book details
+          
           bookDetails.hide();
         });
 
@@ -234,7 +233,7 @@
           booksContainer.empty();
           createPageButtons(Math.ceil(totalResults / maxResults));
 
-          // Hide book details
+          
           bookDetails.hide();
         });
 
@@ -262,7 +261,7 @@
               if (book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail) {
                 image.attr('src', book.volumeInfo.imageLinks.smallThumbnail);
               } else {
-                image.attr('src', 'placeholder.jpg'); // Placeholder image if thumbnail is not available
+                image.attr('src', 'placeholder.jpg'); 
               }
 
               imageContainer.append(image);
@@ -272,7 +271,7 @@
               bookItem.append(imageContainer);
               bookItem.append(title);
 
-              // Add click event listener to show book details
+              
               bookItem.on('click', function() {
                 displayBookDetails(book);
               });
@@ -285,7 +284,7 @@
         }
 
         function displayBookDetails(book) {
-          bookDetails.empty(); // Clear existing book details
+          bookDetails.empty(); 
 
           var detailsHeading = $('<h2>').text('Book Details');
           var detailsTitle = $('<h3>').addClass('book-details-title').text(book.volumeInfo.title);
@@ -301,11 +300,11 @@
           bookDetails.append(detailsDescription);
           bookDetails.append(detailsMoreInfo);
 
-          // Show book details
+          
           bookDetails.show();
         }
 
-        // Load books on page load
+        
         loadBooks('', 0);
       });
     </script>
@@ -340,7 +339,7 @@
     if (book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.smallThumbnail) {
       image.attr('src', book.volumeInfo.imageLinks.smallThumbnail);
     } else {
-      image.attr('src', 'placeholder.jpg'); // Placeholder image if thumbnail is not available
+      image.attr('src', 'placeholder.jpg'); 
     }
 
     imageContainer.append(image);
@@ -350,7 +349,7 @@
     bookItem.append(imageContainer);
     bookItem.append(title);
 
-    // Add click event listener to show book details
+    
     bookItem.on('click', function () {
       displayBookDetails(book.volumeInfo);
     });
@@ -365,7 +364,7 @@
 
 function displayBookDetails(bookInfo) {
   var bookDetails = $('#book_details');
-  bookDetails.empty(); // Clear existing book details
+  bookDetails.empty(); 
 
   var detailsHeading = $('<h2>').text('Book Details');
   var detailsTitle = $('<h3>').addClass('book-details-title').text(bookInfo.title);
@@ -381,7 +380,7 @@ function displayBookDetails(bookInfo) {
   bookDetails.append(detailsDescription);
   bookDetails.append(detailsMoreInfo);
 
-  // Show book details
+  
   bookDetails.show();
 }
 
