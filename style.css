@@ -1,0 +1,145 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+}
+
+main {
+  padding: 2rem;
+}
+
+.movie-card {
+  display: inline-block;
+  width: 300px;
+  margin: 0.5rem;
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+}
+
+.movie-card img {
+  max-width: 100%;
+  max-height: 200px;
+}
+
+.movie-card .movie-details {
+  padding: 1rem;
+}
+
+.movie-card h3 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.movie-card p {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.movie-results.horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.movie-results.horizontal .movie-card {
+  flex: 0 0 calc(20% - 1rem);
+}
+
+.movie-results.list {
+  display: block;
+}
+
+.movie-results.list .movie-card {
+  margin: 1rem 0;
+}
+
+
+.movie-results {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.movie-card {
+  flex: 0 0 calc(20% - 1rem);
+  margin: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.movie-results-vertical {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+}
+
+
+
+
+
+button {
+  padding: 10px 20px;
+  background-color: #8f99a3;
+  color: #000000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4576ab;
+}
+
+#actorInfo {
+  margin-top: 20px;
+}
+
+input {
+  padding: 10px 20px;
+  background-color: #afb5bc;
+  color: #000000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+
+.btn-add-to-fav,
+  .btn-add-to-watchlist {
+   
+    display: block;
+    margin: 0 auto;
+  }
+
+  
+  .movie-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .movie-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+
+  footer {
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+  }

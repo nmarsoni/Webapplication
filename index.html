@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Database Search</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Movie Database Search</h1>
+    <input type="text" id="searchTitleInput" placeholder="Enter movie title">
+    <input type="number" id="searchYearInput" placeholder="Enter movie year">
+    <button id="searchButton">Search</button>
+    <button id="clearButton">Clear</button> 
+    <button id="toggleViewButton">Switch View</button> 
+  
+    <h2>Popular Movies</h2>
+    <button id="showPopularMovies">Show Popular Movies</button>
+    <div id="moviesContainer"></div>
+
+    <h2>Top Rated Movies</h2>
+    <button id="showTopRatedBtn">Show Top Rated Movies</button>
+
+    <h2>Actor/Actress</h2>
+    <button id="actorInfoBtn">Actor/Actress Info</button>
+    <div id="actorInfo"></div>
+    
+  
+  </header>
+
+
+  <main>
+    <div id="movieResults" class="movie-results"></div>
+    <div id="pagination"></div>
+
+
+    <footer>
+      <p>This is a class project and not a valid website.</p>
+    </footer>
+
+
+  </main>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="scripts.js"></script>
+
+
+</body>
+</html>
